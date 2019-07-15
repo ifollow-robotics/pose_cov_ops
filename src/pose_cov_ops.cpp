@@ -155,7 +155,33 @@ std::string to_python(const M &msg)
   return str_msg;
 }
 
-std::string composePose(const std::string &str_a, const std::string &str_b)
+std::string composePosePCP(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::PoseWithCovariance a = from_python<geometry_msgs::PoseWithCovariance>(str_a);
+  geometry_msgs::Pose b = from_python<geometry_msgs::Pose>(str_b);
+  geometry_msgs::PoseWithCovariance trans_compose;
+  pose_cov_ops::compose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
+
+std::string composePosePPC(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::Pose a = from_python<geometry_msgs::Pose>(str_a);
+  geometry_msgs::PoseWithCovariance b = from_python<geometry_msgs::PoseWithCovariance>(str_b);
+  geometry_msgs::PoseWithCovariance trans_compose;
+  pose_cov_ops::compose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
+std::string composePosePCPC(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::PoseWithCovariance a = from_python<geometry_msgs::PoseWithCovariance>(str_a);
+  geometry_msgs::PoseWithCovariance b = from_python<geometry_msgs::PoseWithCovariance>(str_b);
+  geometry_msgs::PoseWithCovariance trans_compose;
+  pose_cov_ops::compose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
+
+std::string composePosePP(const std::string &str_a, const std::string &str_b)
 {
   geometry_msgs::Pose a = from_python<geometry_msgs::Pose>(str_a);
   geometry_msgs::Pose b = from_python<geometry_msgs::Pose>(str_b);
@@ -164,15 +190,50 @@ std::string composePose(const std::string &str_a, const std::string &str_b)
   return to_python(trans_compose);
 }
 
-// char const *greet(char const *str_a)
-// {
-//   return str_a;
-// }
+std::string inverseComposePosePCP(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::PoseWithCovariance a = from_python<geometry_msgs::PoseWithCovariance>(str_a);
+  geometry_msgs::Pose b = from_python<geometry_msgs::Pose>(str_b);
+  geometry_msgs::PoseWithCovariance trans_compose;
+  pose_cov_ops::inverseCompose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
+
+std::string inverseComposePosePPC(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::Pose a = from_python<geometry_msgs::Pose>(str_a);
+  geometry_msgs::PoseWithCovariance b = from_python<geometry_msgs::PoseWithCovariance>(str_b);
+  geometry_msgs::PoseWithCovariance trans_compose;
+  pose_cov_ops::inverseCompose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
+std::string inverseComposePosePCPC(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::PoseWithCovariance a = from_python<geometry_msgs::PoseWithCovariance>(str_a);
+  geometry_msgs::PoseWithCovariance b = from_python<geometry_msgs::PoseWithCovariance>(str_b);
+  geometry_msgs::PoseWithCovariance trans_compose;
+  pose_cov_ops::inverseCompose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
+
+std::string inverseComposePosePP(const std::string &str_a, const std::string &str_b)
+{
+  geometry_msgs::Pose a = from_python<geometry_msgs::Pose>(str_a);
+  geometry_msgs::Pose b = from_python<geometry_msgs::Pose>(str_b);
+  geometry_msgs::Pose trans_compose;
+  pose_cov_ops::inverseCompose(a, b,trans_compose);
+  return to_python(trans_compose);
+}
 
 BOOST_PYTHON_MODULE(pose_cov_ops)
 {
   using namespace boost::python;
-  // def("greet", greet);
-  def("composePose", composePose);
-  
+  def("composePosePP", composePosePP);
+  def("composePosePPC", composePosePPC);
+  def("composePosePCP", composePosePCP);  
+  def("composePosePCPC", composePosePCPC);    
+  def("inverseComposePosePP", inverseComposePosePP);
+  def("inverseComposePosePCP", inverseComposePosePCP);
+  def("inverseComposePosePPC", inverseComposePosePPC);
+  def("inverseComposePosePCPC", inverseComposePosePCPC);
 }

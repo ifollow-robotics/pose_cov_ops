@@ -11,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
 	roscpp
 )
 
+find_package(Boost REQUIRED COMPONENTS python)
+find_package(PythonLibs REQUIRED) # sets ${PYTHON_INCLUDE_DIRS}
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -28,7 +31,7 @@ endif()
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -104,7 +107,14 @@ INCLUDE_DIRS include
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include ${catkin_INCLUDE_DIRS})
+
+
+include_directories(include
+  ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${PYTHON_INCLUDE_DIRS}
+)
+
 
 ## Declare a cpp library
 add_library(${PROJECT_NAME}
@@ -150,6 +160,14 @@ endif()
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   ${MRPT_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+
+
+# change output directory, so python can find the module and avoid the 'lib'-prefix
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  PREFIX "" 
+  LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
 )
 
 #############
@@ -186,15 +204,3 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
-#############
-## Testing ##
-#############
-
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_pose_cov_ops.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)

@@ -16,3 +16,31 @@ MRPT C++ library-wrapper for SE(2) and SE(3) poses and points geometric operatio
 
 Docs: http://wiki.ros.org/pose_cov_ops
 
+This iFollow fork has python bindings implemented. 
+
+```python
+from geometry_msgs.msg import PoseWithCovariance
+from geometry_msgs.msg import Pose
+from pose_cov_ops import PoseCovOps
+pco = PoseCovOps()
+# example inputs
+a = Pose()
+a.orientation.w = 1.0 
+b = PoseWithCovariance()
+b.pose.orientation.w = 1.0
+```
+Compositions irrespective of input with/without Covariances
+```python
+PCO.composePose(a,a)
+PCO.composePose(a,b)
+PCO.composePose(b,a)
+PCO.composePose(b,b)
+```
+Inverse Compositions irrespective of input with/without Covariances
+```python
+PCO.inverseComposePose(a,a)
+PCO.inverseComposePose(a,b)
+PCO.inverseComposePose(b,a)
+PCO.inverseComposePose(b,b)
+```
+

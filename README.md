@@ -22,7 +22,7 @@ This iFollow fork has python bindings implemented.
 from geometry_msgs.msg import PoseWithCovariance
 from geometry_msgs.msg import Pose
 from pose_cov_ops import PoseCovOps
-pco = PoseCovOps()
+PCO = PoseCovOps()
 # example inputs
 a = Pose()
 a.orientation.w = 1.0 
